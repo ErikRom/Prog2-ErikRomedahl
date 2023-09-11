@@ -9,6 +9,25 @@ class Elev:
 person1 = Elev("Erik", 18, True)
 
 if person1.godkänd == True:
-    person1.glad = True
+    person1.glad = True # type: ignore
 
 Elev.presentera()
+
+class Bil:
+    antalbilar = 0
+    __maxHastighet = 0
+    def __init__(self, maxHastighet):
+        antalbilar += 1
+    
+    def bil1(maxHastighet):
+        return self.__maxHastighet()
+    
+    def getMaxHastighet(self):
+        return self.__maxHastighet
+    
+    def setMaxhastighet(self, maxHastighet):
+        if type(maxHastighet) == int and maxHastighet > 0:
+            self.__maxHastighet = maxHastighet
+    
+    def milestokm(miles):
+        return miles * 1.609344
