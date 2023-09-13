@@ -28,6 +28,7 @@ class Bil:
     def setMaxhastighet(self, maxHastighet):
         if type(maxHastighet) == int and maxHastighet > 0:
             self.__maxHastighet = maxHastighet
+        else: print("Du måste ange ett positivt tal")
     
     def milestokm(miles):
         return miles * 1.609344
