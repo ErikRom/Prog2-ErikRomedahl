@@ -1,16 +1,20 @@
-def printing(input):
-    dagar = input
+import math
+
+def printing(n):
+    counter = n
     maskiner = 1
-    counter = 0
+    dagar = 0
+    statyer = 0
 
-    while maskiner < dagar:
-        if dagar/maskiner < maskiner + dagar/2 * maskiner:
-            maskiner += 1
-            counter += 1
+    while statyer < counter:
+        if counter/maskiner > 3:
+            maskiner = maskiner*2
+            dagar += 1
         else:
-            maskiner += 1
-            counter += 1
+            dagar += math.ceil(counter/maskiner)
+            statyer += counter
     
-    print(counter)
+    print(dagar)
 
-printing(5)
+n = int(input())
+printing(n)
