@@ -19,9 +19,9 @@ b.kör()
 b.tuta()
 
 c = Cykel()
-c.kör
-c.plinga
+c.kör()
+c.plinga()
 
 s = Sportbil()
-s.kör
-s.tuta
+s.kör()
+s.tuta()
