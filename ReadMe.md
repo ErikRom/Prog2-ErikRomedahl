@@ -1,3 +1,3 @@
-## En rubrik
+## Programmering 2
 
-Detta är ett test.
+Uppgifter och prov för kursen programmering 2.
