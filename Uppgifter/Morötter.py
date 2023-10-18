@@ -15,6 +15,6 @@ def morötter(t, m):
         if rötter == 1 and counter % m == 0 and counter % t == 0:
             break
 
-    print(f"Tors morötter: {trötter} \n Mors morötter: {mrötter}")
+    print(f"Tors morötter: {trötter} \nMors morötter: {mrötter}")
 
 morötter(19,18)
