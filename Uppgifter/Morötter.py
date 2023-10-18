@@ -1,5 +1,3 @@
-import math
-
 def morötter(t, m):
     counter = 0
     rötter = 40
