@@ -1,6 +1,6 @@
 def reduplikation(ord, upprepning):
     list = [ord]
-    i = 0
+    i = 0   
     while i < upprepning - 1:
         list.append(ord)
         i += 1

@@ -9,4 +9,4 @@ def triplet(N):
 N = input("N: ")
 N = int(N)
 
-triplet(N)
+triplet(N) 
