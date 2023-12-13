@@ -12,7 +12,10 @@ BACKGROUND_COLOR = "#000000"
 
 def start():
     canvas = Canvas(window, bg=BACKGROUND_COLOR, height=GAME_HEIGHT, width=GAME_WIDTH)
-    canvas.pack()
+    canvas.place(x=0,y=0)
+
+    label = Label(window, text="Score:{}".format(score), font=('consolas', 40))
+    label.pack()
 
     window.update()
 
@@ -136,22 +139,23 @@ def start():
 
 window = Tk()
 window.title("Snake game")
-window.resizable(False, False)
-
-score = 0
-direction = 'down'
-
-label = Label(window, text="Score:{}".format(score), font=('consolas', 40))
-label.pack()
 
 canvas_start = Canvas(window, bg='#FF00FF', height=GAME_HEIGHT, width=GAME_WIDTH)
-b = Button(window, text='START')
+canvas_start.pack()
 
-def click_handler(self):
-    start()
+def place_button_center():
+    window_width = window.winfo_width()
+    window_height = window.winfo_height()
+    button_width = 200
+    button_height = 200
+    x = (window_width - button_width) / 2
+    y = (window_height - button_height) / 2
+    b.place(x=x, y=y)
 
-b.bind("<Button-1>", click_handler)
-b.pack
+b = Button(window, text='START', height='10', width='20', bd='20', command=start)
+b.place(x=0, y=0)
+
+window.update()
 
 window_width = window.winfo_width()
 window_height = window.winfo_height()
@@ -163,9 +167,22 @@ y = int((screen_height/2) - (window_height/2))
 
 window.geometry(f"{window_width}x{window_height}+{x}+{y}")
 
-window.bind('<Left>', lambda event: change_direction('left'))
-window.bind('<Right>', lambda event: change_direction('right'))
-window.bind('<Up>', lambda event: change_direction('up'))
-window.bind('<Down>', lambda event: change_direction('down'))
+direction = 'down'
+
+def change_direction(new_direction):
+    global direction
+    if new_direction in ['left', 'right', 'up', 'down']:
+        direction = new_direction
+
+def set_key_bindings():
+    window.bind('<Left>', lambda event: change_direction('left'))
+    window.bind('<Right>', lambda event: change_direction('right'))
+    window.bind('<Up>', lambda event: change_direction('up'))
+    window.bind('<Down>', lambda event: change_direction('down'))
+
+score = 0
+
+set_key_bindings()
+place_button_center()
 
 window.mainloop()
