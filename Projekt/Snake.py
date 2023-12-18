@@ -3,7 +3,7 @@ from tkinter import *
 import random
 from tkinter import colorchooser
 
-# --------------------------------------------------------------------#
+#------------------------------FUNCTIONS-----------------------------#
 
 def start():
     global direction
@@ -11,8 +11,8 @@ def start():
     direction = 'down'
     score = 0
 
-    canvas = Canvas(window, bg=background_color, height=game_height - 50, width=game_width)
-    canvas.place(x=0, y=60)
+    canvas = Canvas(window, bg=background_color, height=game_height, width=game_width)
+    canvas.place(x=0, y=0)
 
     canvas_top = Canvas(window, bg=('#000000'), height=60, width=game_width)
     canvas_top.place(x=0, y=0)
@@ -38,7 +38,7 @@ def start():
             self.squares = []
 
             for i in range(0, body_parts):
-                self.coordinates.append([0, 0])
+                self.coordinates.append([0, 2*space_size])
 
             for x, y in self.coordinates:
                 square = canvas.create_rectangle(x, y, x + space_size, y + space_size, fill=snake_color, tag="snake")
@@ -118,10 +118,10 @@ def start():
 
     def check_collisions(snake):
         x, y = snake.coordinates[0]
-
+        print(x,y, game_height)
         if x < 0 or x >= game_width:
             return True
-        elif y < 0 or y >= game_height:
+        elif y < label_height or y >= game_height:
             return True
 
         for body_part in snake.coordinates[1:]:
@@ -139,7 +139,7 @@ def start():
 
         canvas.destroy()
 
-        canvas_gameover = Canvas(window, bg='#FF00FF', height=game_height, width=game_width)
+        canvas_gameover = Canvas(window, bg='#ADD8E6', height=game_height, width=game_width)
         canvas_gameover.place(x=0, y=0)
 
         canvas_gameover.create_text(350, 100, font=('Helvetica', 70), text="GAME OVER", fill="red")
@@ -173,7 +173,7 @@ def start():
 
 
 def menu():
-    canvas_start = Canvas(window, bg='#FF00FF', height=game_height, width=game_width)
+    canvas_start = Canvas(window, bg='#ADD8E6', height=game_height, width=game_width)
     canvas_start.place(x=0, y=0)
 
     canvas_start.create_text(350, 100, font=('consalolas', 70), text='SNAKE', fill="#0863F9")
@@ -248,7 +248,7 @@ def fastspeed():
 
 def smallsize():
     global space_size
-    space_size = 50
+    space_size = 69
 
 def normalsize():
     global space_size
@@ -256,11 +256,11 @@ def normalsize():
 
 def largesize():
     global space_size
-    space_size = 20
+    space_size = 23
 
 # ---------------------------DEFINED VALUES---------------------------#
-game_width = 700
-game_height = 700
+game_width = 690
+game_height = 690
 speed = 50
 space_size = 30
 body_parts = 5
@@ -269,6 +269,7 @@ food_color = "#FF0000"
 background_color = "#19AE0D"
 score = 0
 highscore = 0
+label_height = 60
 
 # --------------------------------------------------------------------#
 
@@ -276,7 +277,7 @@ highscore = 0
 window = Tk()
 window.title("Snake game")
 
-canvas_start = Canvas(window, bg='#FF00FF', height=game_height, width=game_width)
+canvas_start = Canvas(window, bg='#ADD8E6', height=game_height, width=game_width)
 canvas_start.pack()
 
 menu()
