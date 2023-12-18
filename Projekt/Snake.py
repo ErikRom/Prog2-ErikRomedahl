@@ -1,4 +1,4 @@
-# ------------------------------LIBRARIES-----------------------------#
+#------------------------------LIBRARIES-----------------------------#
 from tkinter import *
 import random
 from tkinter import colorchooser
@@ -24,7 +24,11 @@ def start():
                             font=('consolas', 25))
     label_highscore.place(x=350, y=10)
 
+    label_highscore = Label(window, text="Highscore:{}".format(highscore), bg='#000000', fg='#FFFFFF', font=('consolas', 25))
+    label_highscore.place(x=350, y=10)
+    
     window.update()
+    
 
     class Snake:
 
@@ -39,6 +43,7 @@ def start():
             for x, y in self.coordinates:
                 square = canvas.create_rectangle(x, y, x + space_size, y + space_size, fill=snake_color, tag="snake")
                 self.squares.append(square)
+
 
     class Food:
         global Food
@@ -154,6 +159,11 @@ def start():
         window.bind('<d>', lambda event: change_direction('right'))
         window.bind('<w>', lambda event: change_direction('up'))
         window.bind('<s>', lambda event: change_direction('down'))
+        
+        window.bind('<Left>', lambda event: change_direction('left'))
+        window.bind('<Right>', lambda event: change_direction('right'))
+        window.bind('<Up>', lambda event: change_direction('up'))
+        window.bind('<Down>', lambda event: change_direction('down'))
 
     set_key_bindings()
     snake = Snake()
