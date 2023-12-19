@@ -50,8 +50,8 @@ def start():
 
         def __init__(self):
             x = random.randint(0, (game_width // space_size) - 1) * space_size
-            y = random.randint(0, (game_height // space_size) - 1) * space_size
-
+            y = random.randint(2, (game_height // space_size) - 1) * space_size
+            print(y)
             self.coordinates = [x, y]
 
             canvas.create_oval(x, y, x + space_size, y + space_size, fill=food_color, tag="food")
@@ -118,7 +118,7 @@ def start():
 
     def check_collisions(snake):
         x, y = snake.coordinates[0]
-        print(x,y, game_height)
+        
         if x < 0 or x >= game_width:
             return True
         elif y < label_height or y >= game_height:
@@ -194,27 +194,26 @@ def menu():
     b_snake = Button(window, text='SNAKE COLOR', height='5', width='20', command=Snakecolor)
     b_snake.place(x=420, y=400)
 
-    b_snake = Button(window, text='Slow', height='2', width='10', command=slowspeed)
+    b_snake = Button(window, text='Slow', height='2', width='10', command=lambda: set_speed(150))
     b_snake.place(x=80, y=540)
 
-    b_snake = Button(window, text='Normal', height='2', width='10', command=normalspeed)
+    b_snake = Button(window, text='Normal', height='2', width='10', command=lambda: set_speed(100))
     b_snake.place(x=160, y=540)
 
-    b_snake = Button(window, text='Fast', height='2', width='10', command=fastspeed)
+    b_snake = Button(window, text='Fast', height='2', width='10', command=lambda: set_speed(50))
     b_snake.place(x=240, y=540)
 
-    b_snake = Button(window, text='Small', height='2', width='10', command=smallsize)
+    b_snake = Button(window, text='Small', height='2', width='10', command=lambda: set_size(69))
     b_snake.place(x=385, y=540)
 
-    b_snake = Button(window, text='Normal', height='2', width='10', command=normalsize)
+    b_snake = Button(window, text='Normal', height='2', width='10', command=lambda: set_size(30))
     b_snake.place(x=465, y=540)
 
-    b_snake = Button(window, text='Large', height='2', width='10', command=largesize)
+    b_snake = Button(window, text='Large', height='2', width='10', command=lambda: set_size(23))
     b_snake.place(x=545, y=540)
 
     b = Button(window, text='PLAY', height='5', width='20', command=start)
     b.place(x=260, y=280)
-
 
     window.update()
 
@@ -234,29 +233,14 @@ def Snakecolor():
     snake_color = colorchooser.askcolor()[1]
     menu()
 
-def slowspeed():
+def set_speed(new_speed):
     global speed
-    speed = 150
+    speed = new_speed
 
-def normalspeed():
-    global speed
-    speed = 100
-
-def fastspeed():
-    global speed
-    speed = 50
-
-def smallsize():
+def set_size(new_size):
     global space_size
-    space_size = 69
+    space_size = new_size
 
-def normalsize():
-    global space_size
-    space_size = 30
-
-def largesize():
-    global space_size
-    space_size = 23
 
 # ---------------------------DEFINED VALUES---------------------------#
 game_width = 690
