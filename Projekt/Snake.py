@@ -2,7 +2,7 @@
 from tkinter import *
 import random
 from tkinter import colorchooser
-
+from PIL import ImageColor
 
 # ------------------------------FUNCTIONS-----------------------------#
 
@@ -62,8 +62,7 @@ def start():
             super().__init__()
             canvas.create_rectangle(self.coordinates[0], self.coordinates[1],
                                     self.coordinates[0] + space_size, self.coordinates[1] + space_size,
-                                    fill=special_color, tag="food")
-
+                                    fill=get_inverse_color(food_color), tag="food")
     def next_turn(snake, food):
         x, y = snake.coordinates[0]
 
@@ -247,6 +246,11 @@ def set_size(new_size):
     global space_size
     space_size = new_size
 
+def get_inverse_color(hex_color):
+    rgb_color = ImageColor.getrgb(hex_color)
+    inverse_rgb = tuple(255 - value for value in rgb_color)
+    return "#{:02x}{:02x}{:02x}".format(*inverse_rgb)
+
 # ---------------------------DEFINED VALUES---------------------------#
 game_width = 690
 game_height = 690
@@ -255,7 +259,6 @@ space_size = 30
 body_parts = 5
 snake_color = "#0863F9"
 food_color = "#FF0000"
-special_color = "#00FDFF"
 background_color = "#19AE0D"
 score = 0
 highscore = 0
