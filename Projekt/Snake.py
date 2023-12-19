@@ -1,9 +1,10 @@
-#------------------------------LIBRARIES-----------------------------#
+# ------------------------------LIBRARIES-----------------------------#
 from tkinter import *
 import random
 from tkinter import colorchooser
 
-#------------------------------FUNCTIONS-----------------------------#
+
+# ------------------------------FUNCTIONS-----------------------------#
 
 def start():
     global direction
@@ -24,11 +25,11 @@ def start():
                             font=('consolas', 25))
     label_highscore.place(x=350, y=10)
 
-    label_highscore = Label(window, text="Highscore:{}".format(highscore), bg='#000000', fg='#FFFFFF', font=('consolas', 25))
+    label_highscore = Label(window, text="Highscore:{}".format(highscore), bg='#000000', fg='#FFFFFF',
+                            font=('consolas', 25))
     label_highscore.place(x=350, y=10)
-    
+
     window.update()
-    
 
     class Snake:
 
@@ -38,23 +39,30 @@ def start():
             self.squares = []
 
             for i in range(0, body_parts):
-                self.coordinates.append([0, 2*space_size])
+                self.coordinates.append([0, 2 * space_size])
 
             for x, y in self.coordinates:
                 square = canvas.create_rectangle(x, y, x + space_size, y + space_size, fill=snake_color, tag="snake")
                 self.squares.append(square)
 
-
     class Food:
-        global Food
-
         def __init__(self):
+            self.coordinates = self.generate_coordinates()
+            canvas.create_oval(self.coordinates[0], self.coordinates[1],
+                               self.coordinates[0] + space_size, self.coordinates[1] + space_size,
+                               fill=food_color, tag="food")
+
+        def generate_coordinates(self):
             x = random.randint(0, (game_width // space_size) - 1) * space_size
             y = random.randint(2, (game_height // space_size) - 1) * space_size
-            print(y)
-            self.coordinates = [x, y]
+            return [x, y]
 
-            canvas.create_oval(x, y, x + space_size, y + space_size, fill=food_color, tag="food")
+    class SpecialFood(Food):
+        def __init__(self):
+            super().__init__()
+            canvas.create_rectangle(self.coordinates[0], self.coordinates[1],
+                                    self.coordinates[0] + space_size, self.coordinates[1] + space_size,
+                                    fill=special_color, tag="food")
 
     def next_turn(snake, food):
         x, y = snake.coordinates[0]
@@ -69,34 +77,32 @@ def start():
             x += space_size
 
         snake.coordinates.insert(0, (x, y))
-
         square = canvas.create_rectangle(x, y, x + space_size, y + space_size, fill=snake_color)
-
         snake.squares.insert(0, square)
 
         if x == food.coordinates[0] and y == food.coordinates[1]:
-
             global score
 
-            score += 1
+            if isinstance(food, SpecialFood):
+                score += 2
+            else:
+                score += 1
 
             label.config(text="Score:{}".format(score))
-
             canvas.delete("food")
 
-            food = Food()
+            if random.random() < 0.2:
+                food = SpecialFood()
+            else:
+                food = Food()
 
         else:
-
             del snake.coordinates[-1]
-
             canvas.delete(snake.squares[-1])
-
             del snake.squares[-1]
 
         if check_collisions(snake):
             game_over()
-
         else:
             window.after(speed, next_turn, snake, food)
 
@@ -118,7 +124,7 @@ def start():
 
     def check_collisions(snake):
         x, y = snake.coordinates[0]
-        
+
         if x < 0 or x >= game_width:
             return True
         elif y < label_height or y >= game_height:
@@ -159,7 +165,7 @@ def start():
         window.bind('<d>', lambda event: change_direction('right'))
         window.bind('<w>', lambda event: change_direction('up'))
         window.bind('<s>', lambda event: change_direction('down'))
-        
+
         window.bind('<Left>', lambda event: change_direction('left'))
         window.bind('<Right>', lambda event: change_direction('right'))
         window.bind('<Up>', lambda event: change_direction('up'))
@@ -241,7 +247,6 @@ def set_size(new_size):
     global space_size
     space_size = new_size
 
-
 # ---------------------------DEFINED VALUES---------------------------#
 game_width = 690
 game_height = 690
@@ -250,6 +255,7 @@ space_size = 30
 body_parts = 5
 snake_color = "#0863F9"
 food_color = "#FF0000"
+special_color = "#00FDFF"
 background_color = "#19AE0D"
 score = 0
 highscore = 0
