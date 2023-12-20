@@ -2,7 +2,7 @@
 from tkinter import *
 import random
 from tkinter import colorchooser
-from PIL import ImageColor
+from PIL import ImageColor #pip import pillow
 
 # ------------------------------FUNCTIONS-----------------------------#
 
