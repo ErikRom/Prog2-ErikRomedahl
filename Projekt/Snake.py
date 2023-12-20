@@ -273,6 +273,8 @@ window.title("Snake game")
 canvas_start = Canvas(window, bg='#ADD8E6', height=game_height, width=game_width)
 canvas_start.pack()
 
+window.resizable(False, False)
+
 menu()
 
 window_width = window.winfo_width()
