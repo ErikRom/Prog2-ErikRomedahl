@@ -45,6 +45,32 @@ def start():
                 self.squares.append(square)
 
 
+        class GameEntity:
+        def __init__(self, canvas, color, tag):
+            self.canvas = canvas
+            self.color = color
+            self.tag = tag
+            self.coordinates = []
+
+        def create_object(self, x, y, size):
+            pass  # This method will be overridden by subclasses
+
+
+    class Obstacle(GameEntity):
+        def __init__(self, canvas, color, tag, game_width, game_height, space_size):
+            super().__init__(canvas, color, tag)
+            self.game_width = game_width
+            self.game_height = game_height
+            self.space_size = space_size
+
+        def create_object(self):
+            x = random.randint(0, (self.game_width // self.space_size) - 1) * self.space_size
+            y = random.randint(0, (self.game_height // self.space_size) - 1) * self.space_size
+
+            self.coordinates = [x, y]
+
+            self.canvas.create_rectangle(x, y, x + self.space_size, y + self.space_size, fill=self.color, tag=self.tag)
+
     class Food:
         global Food
 
