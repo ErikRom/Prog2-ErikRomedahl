@@ -1,9 +1,25 @@
-#------------------------------LIBRARIES-----------------------------#
+#-------------------------------LIBRARIES-----------------------------#
 from tkinter import *
 import random
 from tkinter import colorchooser
+from PIL import ImageColor #pip import pillow
 
-#------------------------------FUNCTIONS-----------------------------#
+#----------------------------DEFINED VALUES---------------------------#
+game_width = 690
+game_height = 690
+speed = 50
+space_size = 30
+body_parts = 5
+snake_color = "#0863F9"
+food_color = "#FF0000"
+background_color = "#19AE0D"
+score = 0
+highscore = 0
+label_height = 60
+
+#---------------------------------------------------------------------#
+
+#-------------------------------FUNCTIONS-----------------------------#
 
 def start():
     global direction
@@ -24,11 +40,7 @@ def start():
                             font=('consolas', 25))
     label_highscore.place(x=350, y=10)
 
-    label_highscore = Label(window, text="Highscore:{}".format(highscore), bg='#000000', fg='#FFFFFF', font=('consolas', 25))
-    label_highscore.place(x=350, y=10)
-    
     window.update()
-    
 
     class Snake:
 
@@ -38,50 +50,30 @@ def start():
             self.squares = []
 
             for i in range(0, body_parts):
-                self.coordinates.append([0, 2*space_size])
+                self.coordinates.append([0, 2 * space_size])
 
             for x, y in self.coordinates:
                 square = canvas.create_rectangle(x, y, x + space_size, y + space_size, fill=snake_color, tag="snake")
                 self.squares.append(square)
 
-
-        class GameEntity:
-        def __init__(self, canvas, color, tag):
-            self.canvas = canvas
-            self.color = color
-            self.tag = tag
-            self.coordinates = []
-
-        def create_object(self, x, y, size):
-            pass  # This method will be overridden by subclasses
-
-
-    class Obstacle(GameEntity):
-        def __init__(self, canvas, color, tag, game_width, game_height, space_size):
-            super().__init__(canvas, color, tag)
-            self.game_width = game_width
-            self.game_height = game_height
-            self.space_size = space_size
-
-        def create_object(self):
-            x = random.randint(0, (self.game_width // self.space_size) - 1) * self.space_size
-            y = random.randint(0, (self.game_height // self.space_size) - 1) * self.space_size
-
-            self.coordinates = [x, y]
-
-            self.canvas.create_rectangle(x, y, x + self.space_size, y + self.space_size, fill=self.color, tag=self.tag)
-
     class Food:
-        global Food
-
         def __init__(self):
+            self.coordinates = self.generate_coordinates()
+            canvas.create_oval(self.coordinates[0], self.coordinates[1],
+                               self.coordinates[0] + space_size, self.coordinates[1] + space_size,
+                               fill=food_color, tag="food")
+
+        def generate_coordinates(self):
             x = random.randint(0, (game_width // space_size) - 1) * space_size
-            y = random.randint(0, (game_height // space_size) - 1) * space_size
+            y = random.randint(2, (game_height // space_size) - 1) * space_size
+            return [x, y]
 
-            self.coordinates = [x, y]
-
-            canvas.create_oval(x, y, x + space_size, y + space_size, fill=food_color, tag="food")
-
+    class SpecialFood(Food):
+        def __init__(self):
+            super().__init__()
+            canvas.create_rectangle(self.coordinates[0], self.coordinates[1],
+                                    self.coordinates[0] + space_size, self.coordinates[1] + space_size,
+                                    fill=get_inverse_color(food_color), tag="food")
     def next_turn(snake, food):
         x, y = snake.coordinates[0]
 
@@ -95,34 +87,32 @@ def start():
             x += space_size
 
         snake.coordinates.insert(0, (x, y))
-
         square = canvas.create_rectangle(x, y, x + space_size, y + space_size, fill=snake_color)
-
         snake.squares.insert(0, square)
 
         if x == food.coordinates[0] and y == food.coordinates[1]:
-
             global score
 
-            score += 1
+            if isinstance(food, SpecialFood):
+                score += 2
+            else:
+                score += 1
 
             label.config(text="Score:{}".format(score))
-
             canvas.delete("food")
 
-            food = Food()
+            if random.random() < 0.2:
+                food = SpecialFood()
+            else:
+                food = Food()
 
         else:
-
             del snake.coordinates[-1]
-
             canvas.delete(snake.squares[-1])
-
             del snake.squares[-1]
 
         if check_collisions(snake):
             game_over()
-
         else:
             window.after(speed, next_turn, snake, food)
 
@@ -144,7 +134,7 @@ def start():
 
     def check_collisions(snake):
         x, y = snake.coordinates[0]
-        print(x,y, game_height)
+
         if x < 0 or x >= game_width:
             return True
         elif y < label_height or y >= game_height:
@@ -185,7 +175,7 @@ def start():
         window.bind('<d>', lambda event: change_direction('right'))
         window.bind('<w>', lambda event: change_direction('up'))
         window.bind('<s>', lambda event: change_direction('down'))
-        
+
         window.bind('<Left>', lambda event: change_direction('left'))
         window.bind('<Right>', lambda event: change_direction('right'))
         window.bind('<Up>', lambda event: change_direction('up'))
@@ -220,27 +210,26 @@ def menu():
     b_snake = Button(window, text='SNAKE COLOR', height='5', width='20', command=Snakecolor)
     b_snake.place(x=420, y=400)
 
-    b_snake = Button(window, text='Slow', height='2', width='10', command=slowspeed)
+    b_snake = Button(window, text='Slow', height='2', width='10', command=lambda: set_speed(150))
     b_snake.place(x=80, y=540)
 
-    b_snake = Button(window, text='Normal', height='2', width='10', command=normalspeed)
+    b_snake = Button(window, text='Normal', height='2', width='10', command=lambda: set_speed(100))
     b_snake.place(x=160, y=540)
 
-    b_snake = Button(window, text='Fast', height='2', width='10', command=fastspeed)
+    b_snake = Button(window, text='Fast', height='2', width='10', command=lambda: set_speed(50))
     b_snake.place(x=240, y=540)
 
-    b_snake = Button(window, text='Small', height='2', width='10', command=smallsize)
+    b_snake = Button(window, text='Small', height='2', width='10', command=lambda: set_size(69))
     b_snake.place(x=385, y=540)
 
-    b_snake = Button(window, text='Normal', height='2', width='10', command=normalsize)
+    b_snake = Button(window, text='Normal', height='2', width='10', command=lambda: set_size(30))
     b_snake.place(x=465, y=540)
 
-    b_snake = Button(window, text='Large', height='2', width='10', command=largesize)
+    b_snake = Button(window, text='Large', height='2', width='10', command=lambda: set_size(23))
     b_snake.place(x=545, y=540)
 
     b = Button(window, text='PLAY', height='5', width='20', command=start)
     b.place(x=260, y=280)
-
 
     window.update()
 
@@ -260,51 +249,28 @@ def Snakecolor():
     snake_color = colorchooser.askcolor()[1]
     menu()
 
-def slowspeed():
+def set_speed(new_speed):
     global speed
-    speed = 150
+    speed = new_speed
 
-def normalspeed():
-    global speed
-    speed = 100
-
-def fastspeed():
-    global speed
-    speed = 50
-
-def smallsize():
+def set_size(new_size):
     global space_size
-    space_size = 69
+    space_size = new_size
 
-def normalsize():
-    global space_size
-    space_size = 30
+def get_inverse_color(hex_color):
+    rgb_color = ImageColor.getrgb(hex_color)
+    inverse_rgb = tuple(255 - value for value in rgb_color)
+    return "#{:02x}{:02x}{:02x}".format(*inverse_rgb)
+#---------------------------------------------------------------------#
 
-def largesize():
-    global space_size
-    space_size = 23
-
-# ---------------------------DEFINED VALUES---------------------------#
-game_width = 690
-game_height = 690
-speed = 50
-space_size = 30
-body_parts = 5
-snake_color = "#0863F9"
-food_color = "#FF0000"
-background_color = "#19AE0D"
-score = 0
-highscore = 0
-label_height = 60
-
-# --------------------------------------------------------------------#
-
-# -------------------------START OF PROGRAM---------------------------#
+#--------------------------START OF PROGRAM---------------------------#
 window = Tk()
 window.title("Snake game")
 
 canvas_start = Canvas(window, bg='#ADD8E6', height=game_height, width=game_width)
 canvas_start.pack()
+
+window.resizable(False, False)
 
 menu()
 
@@ -320,4 +286,4 @@ window.geometry(f"{window_width}x{window_height}+{x}+{y}")
 
 window.mainloop()
 
-# --------------------------------------------------------------------#
+#---------------------------------------------------------------------#
