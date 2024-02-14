@@ -10,13 +10,14 @@ app.get('/', (req, res) => {
 })
 
 io.on('connection', (socket) => {
-    socket.emit('chat message', 'Welcome to the chat!');
-    socket.id()
-
-    io.emit('chat message', 'A new user has joined the chat');
-
-    socket.on('chat message', (msg) => {
-        io.emit('chat message', msg);
+    socket.on('username set', (msg) => {
+        socket.broadcast.emit('new user', msg)
+    })
+    socket.on('username set 1', (msg) => {
+        socket.emit('new user', msg)
+    })
+    socket.on('user sends message', (msg) => {
+        io.emit('new message', msg);
     });
 });
 
