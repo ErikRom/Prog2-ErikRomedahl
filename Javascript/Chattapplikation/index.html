@@ -25,6 +25,10 @@
     <form id="nameform" action="">
       <input id="namn" autocomplete="off" /><button>Submit</button>
     </form>
+    <form>
+      <p id='type'>user is typing</p>
+    </form>
+    
     <script src="/socket.io/socket.io.js"></script>
 <script>
   var socket = io();
@@ -33,6 +37,22 @@
   var form = document.getElementById('form');
   var input = document.getElementById('input');
   var username = ""
+  var trueorfalse = true
+
+  function IsEmpty() {
+    if (document.form.value == "") {
+      trueorfalse = true
+    }
+    else {
+      trueorfalse = false
+    }
+    while (trueorfalse) {
+      type.style.display = 'none'
+    }
+    while (trueorfalse == false) {
+      type.style.display = 'user is typing'
+    }
+  }
 
   form.addEventListener('submit', function(e) {
     e.preventDefault();
@@ -59,12 +79,14 @@
     window.scrollTo(0, document.body.scrollHeight);
   });
 
-  socket.on('new user', function(msg) {
+  socket.on('connection', function(msg) {
     var item = document.createElement('li');
     item.textContent = msg.username + msg.text;
     messages.appendChild(item);
     window.scrollTo(0, document.body.scrollHeight);
   });
+
+  socket.on('left')
 
     </script>
   </body>
