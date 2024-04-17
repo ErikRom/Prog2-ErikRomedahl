@@ -1,14 +1,13 @@
 import csv
-lag = []
-
 
 with open('teams.csv') as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=',')
     line_count = 0
     points = [0]
     teams = [0]
-    points2 = []
-    teams2 = []
+    allTeams5on4  = {}
+
+
     for row in csv_reader:
         if row[5] == 'all':
             points.append(row[12])
@@ -19,18 +18,15 @@ with open('teams.csv') as csv_file:
             else:
                 points.pop(1)
                 teams.pop(1)
+
         if row[5] == '5on4':
-            if len(points2) < 10:
-                points2.append(row[12])
-                teams2.append(row[3])
-            else:
-                for i in points2:
-                    print(points2)
-                    i = float(points[i])
-                    if float(row[12]) > float(points2[i]):
-                        points2.pop(i)
-                        points2.append(i)
-                        teams2.pop(i)
-                        teams2.pop(i)
+            allTeams5on4.append({
+                "team": row[3],
+                "points": float(row[7])
+            })
+        sortedTeams = sorted(allTeams5on4.items(), key=lambda x:x[1], reverse=True)
+
+        for key, value in sortedTeams[:10]:
+            print(key)
+
 print(f"Best team: {teams[0]}")
-print(teams2)
