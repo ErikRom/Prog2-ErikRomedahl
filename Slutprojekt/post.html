@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="container-post">
+        <h2 id="title-post"></h2>
+        <p id="author-post"></p>
+        <p id="content-post"></p>
+        <p id="date-post"></p>
+        <p id="likes-post"></p>
+    </div>
+    <i class="fa-regular fa-circle fa-4x circle3">
+        <i class="fa-solid fa-x fa-2xs cross"></i>
+        <a href="/home.html" class="link"></a>
+    </i>
+    <br><br><br><br><br><br><br>
+    <div id="container-comments">
+        
+    </div>
+    <br><br><br>
+    <div id="container-make-comment">
+        <h1>Make a comment : </h1>
+        <br>
+        <form class="form-comment">
+            <label for="author" style="font-size: 22px;">Author: </label>
+            <input required type="text" id="authorComment" name="authorComment" maxlength="30" placeholder="Author for the comment">
+            <br><br><br>
+            <label for="content" style="font-size: 22px;">Content: </label>
+            <br><br>
+            <textarea required type="text" id="contentComment" name="contentComment" maxlength="1000" placeholder="Content for the comment"></textarea>
+            <br><br>
+            <input type="submit" value="Submit">
+        </form>
+
+    </div>
+    <br><br><br>
+    <script src="script.js"></script>
+</body>
+</html>
